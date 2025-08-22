@@ -15,12 +15,12 @@ pulse_entries = []
 for i in range(6):
     tk.Label(root, text=f"Axis {i+1}").grid(row=i, column=0, padx=5, pady=5)
 
-    id_entry = tk.Entry(root, width=5)
-    id_entry.grid(row=i, column=1)
-    id_entries.append(id_entry)
+    # id_entry = tk.Entry(root, width=5)
+    # id_entry.grid(row=i, column=1)
+    # id_entries.append(id_entry)
 
     pulse_entry = tk.Entry(root, width=8)
-    pulse_entry.grid(row=i, column=2)
+    pulse_entry.grid(row=i, column=1)
     pulse_entries.append(pulse_entry)
 
     run_button = tk.Button(root, text="RUN", command=lambda i=i: run_axis(i))
