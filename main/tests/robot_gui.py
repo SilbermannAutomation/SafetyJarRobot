@@ -1,7 +1,12 @@
 import tkinter as tk
 from robot_control import RobotController
+from joystick_frame import JoystickFrame
 
 controller = RobotController()
+root = tk.Tk()
+joystick = JoystickFrame(root, controller)
+joystick.pack(pady=10)
+
 
 def validate_input(P):
     return P.isdigit() and 0 <= int(P) <= 1000 or P == ""
