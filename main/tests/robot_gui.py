@@ -68,31 +68,4 @@ for i in range(AXES):
 refresh_btn = tk.Button(root, text="Refresh positions", command=refresh_positions)
 refresh_btn.pack(pady=10)
 
-
-# ===== ДОБАВЛЕННЫЕ КНОПКИ =====
-
-control_frame = tk.Frame(root)
-control_frame.pack(fill="both", expand=True, padx=20, pady=20)
-
-# Z-axis ▲ ▼ (верхний левый угол)
-z_frame = tk.Frame(control_frame)
-z_frame.grid(row=0, column=0, sticky="nw", padx=10, pady=10)
-
-tk.Button(z_frame, text="▲", fg="green", command=lambda: controller.move_axis(3, 600)).pack()
-tk.Button(z_frame, text="▼", fg="green", command=lambda: controller.move_axis(3, 400)).pack()
-
-# Wrist ↻ ↺ (верхний правый угол)
-wrist_frame = tk.Frame(control_frame)
-wrist_frame.grid(row=0, column=1, sticky="ne", padx=10, pady=10)
-
-tk.Button(wrist_frame, text="↻", fg="green", command=lambda: controller.move_axis(2, 600)).pack()
-tk.Button(wrist_frame, text="↺", fg="green", command=lambda: controller.move_axis(2, 400)).pack()
-
-# Gripper ⏶ ⏷ (нижний правый угол)
-grip_frame = tk.Frame(control_frame)
-grip_frame.grid(row=1, column=1, sticky="se", padx=10, pady=10)
-
-tk.Button(grip_frame, text="⏶", fg="green", command=lambda: controller.move_axis(6, 600)).pack()
-tk.Button(grip_frame, text="⏷", fg="green", command=lambda: controller.move_axis(6, 400)).pack()
-
 root.mainloop()
