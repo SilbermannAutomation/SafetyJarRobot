@@ -41,7 +41,7 @@ class JoystickFrame(tk.Frame):
         # Gripper ⏶ ⏷ (нижний правый угол, соосные по X, близко друг к другу)
         self.canvas.create_polygon(160, 190, 180, 180, 180, 200,
             fill="green", tags="grip_open")
-        self.canvas.create_polygon( 200, 190, 185, 180, 185, 200,
+        self.canvas.create_polygon( 205, 190, 185, 180, 185, 200,
             fill="green", tags="grip_close"
         )
 
