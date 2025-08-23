@@ -2,6 +2,8 @@ import tkinter as tk
 from robot_control import RobotController
 from joystick_frame import JoystickFrame
 
+AXES = 6  # число осей робота
+
 controller = RobotController()
 root = tk.Tk()
 root.title("Robot GUI")
@@ -9,12 +11,15 @@ root.title("Robot GUI")
 joystick = JoystickFrame(root, controller)
 joystick.pack(pady=10)
 
+
 def validate_input(P):
     return (P.isdigit() and 0 <= int(P) <= 1000) or P == ""
+
 
 def run_axis(axis_num, spinboxes):
     pulse = int(spinboxes[axis_num - 1].get())
     controller.move_axis(axis_num, pulse)
+
 
 def refresh_positions():
     """Обновляем все Spinbox значениями с робота"""
@@ -24,11 +29,12 @@ def refresh_positions():
             sb.delete(0, "end")
             sb.insert(0, str(pos))
 
+
 vcmd = (root.register(validate_input), "%P")
 spinboxes = []
 
 # создаём панель управления для каждой оси
-for i in range(controller.axes):
+for i in range(AXES):
     frame = tk.Frame(root)
     frame.pack(padx=10, pady=5)
 
