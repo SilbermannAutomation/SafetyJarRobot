@@ -16,13 +16,27 @@ def run_axis(axis_num, spinboxes):
     pulse = int(spinboxes[axis_num - 1].get())
     controller.move_axis(axis_num, pulse)
 
+def refresh_positions():
+    """Обновляем все Spinbox значениями с робота"""
+    for i, sb in enumerate(spinboxes, start=1):
+        pos = controller.get_axis_position(i)
+        if pos is not None:
+            sb.delete(0, "end")
+            sb.insert(0, str(pos))
+
 vcmd = (root.register(validate_input), "%P")
 spinboxes = []
-for i in range(6):
+
+# создаём панель управления для каждой оси
+for i in range(controller.axes):
     frame = tk.Frame(root)
     frame.pack(padx=10, pady=5)
 
     tk.Label(frame, text=f"Axis {i + 1}").pack(side="left", padx=5)
+
+    current_pos = controller.get_axis_position(i + 1)
+    if current_pos is None:
+        current_pos = 500
 
     sb = tk.Spinbox(
         frame,
@@ -33,7 +47,7 @@ for i in range(6):
         width=6
     )
     sb.delete(0, "end")
-    sb.insert(0, "100")
+    sb.insert(0, str(current_pos))
     sb.pack(side="left", padx=5)
     spinboxes.append(sb)
 
@@ -43,5 +57,9 @@ for i in range(6):
         command=lambda axis=i + 1: run_axis(axis, spinboxes)
     )
     btn.pack(side="left", padx=5)
+
+# кнопка обновления позиций
+refresh_btn = tk.Button(root, text="Обновить позиции", command=refresh_positions)
+refresh_btn.pack(pady=10)
 
 root.mainloop()
