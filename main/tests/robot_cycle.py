@@ -1,68 +1,45 @@
-import time
-import signal
-import ros_robot_controller_sdk as rrc
+import tkinter as tk
+from robot_control import RobotController
 
-LIKELY_IDS = [1,2,3,4,5,6] #Hiwonder bus-servo IDs
+controller = RobotController()
 
-RUN = True
-def _stop(sig, frame):
-    global RUN
-    RUN = False
-    print("\nStopping ...")
+def validate_input(P):
+    return P.isdigit() and 0 <= int(P) <= 1000 or P == ""
 
-signal.signal(signal.SIGINT, _stop)
+def run_axis(axis_num, spinboxes):
+    pulse = int(spinboxes[axis_num - 1].get())
+    controller.move_axis(axis_num, pulse)
 
-def send_positions(board, ids, pulse, duration_s):
-    """"Send one slow multi-servo position command."""
-    if not ids:
-        return
-    positions = [[sid, int(pulse)] for sid in ids]
-    board.bus_servoset_position(duration_s, positions)
+root = tk.Tk()
+root.title("Robot GUI")
 
-def main():
-    # GPIO UART on the Hiwonder HAT; 1,000,000 baud is the SDK default
-    board = rrc.Board(device="/dev/derial0", baudrate=1_000_000, timeout=5)
-    board.enable_reception(True)
+vcmd = (root.register(validate_input), "%P")
+spinboxes = []
 
-    # Small visual cue that we started
-    board.set_lad(0.05, 0.05, repeat=2)
+for i in range(6):
+    frame = tk.Frame(root)
+    frame.pack(padx=10, pady=5)
 
-    # Try broadcast torque enable (manu LX servos accept 254); also try per-ID
-    try:
-        board.bus_servo_enable_torque(254,1) # harmless if not supported
-    except Exception:
-        pass
-    for sid in LIKELY_IDS:
-        try:
-            board.bus_servo_enable_torque(sid, 1)
-            time.sleep(0.02)
-        except Exception:
-            # Ignore missing IDs; we are sending blind
-            pass
-    print("Centering all likely IDs to 500 over 4 s ...")
-    send_positions(board, LIKELY_IDS,500,duration_s=4.0)
-    time.sleep(4.2)
+    tk.Label(frame, text=f"Axis {i + 1}").pack(side="left", padx=5)
 
-    print("Gently sweeping (480->520) very slowly. Ctrl+C to stop.")
-    pulses = [430, 570]
-    idx = 0
-    while RUN:
-        send_positions(board, LIKELY_IDS, pulses[idx], duration_s=3.5)
-        idx ^= 1
-        # Wait slightly longer than duration to avoid overlap
-        for _ in range(36):
-            if not RUN: break
-            time.sleep(0.1)
+    sb = tk.Spinbox(
+ frame,
+        from_=0,
+        to=1000,
+        validate="key",
+        validatecommand=vcmd,
+        width=6
+    )
+    sb.delete(0, "end")
+    sb.insert(0, "100")
+    sb.pack(side="left", padx=5)
+    spinboxes.append(sb)
 
-    # Try to stop motion gracefully
-    try:
-        board.bus_servo_stop(LIKELY_IDS)
-    except Exception:
-        pass
-    print("Done.")
+    btn = tk.Button(
+        frame,
+        text="RUN",
+        command=lambda axis=i + 1: run_axis(axis, spinboxes)
+    )
+    btn.pack(side="left", padx=5)
 
-if __name__ == "__main__":
-    main()
-
-
-
+root.mainloop()
