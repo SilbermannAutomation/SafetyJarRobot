@@ -29,7 +29,7 @@ class JoystickFrame(tk.Frame):
         # Z-axis ▲ ▼ (верхний левый угол)
         self.canvas.create_polygon(40, 20, 30, 40, 50, 40,
             fill="green", tags="z_up")
-        self.canvas.create_polygon(40, 60, 30, 40, 50, 40,
+        self.canvas.create_polygon(50, 70, 40, 50, 60, 50,
             fill="green", tags="z_down")
 
         # Wrist ↻ ↺ (верхний правый угол, маленькие дуги)
