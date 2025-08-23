@@ -53,7 +53,7 @@ for i in range(AXES):
         width=6
     )
     sb.delete(0, "end")
-    sb.insert(0, str(current_pos))
+    sb.insert(0, "100")
     sb.pack(side="left", padx=5)
     spinboxes.append(sb)
 
