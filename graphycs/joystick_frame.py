@@ -39,12 +39,10 @@ class JoystickFrame(tk.Frame):
             style='arc', width=3, outline="green", tags="wrist_ccw")
 
         # Gripper ⏶ ⏷ (нижний правый угол, соосные по X, близко друг к другу)
-        self.canvas.create_polygon(170, 190, 185, 180, 185, 200,
-            fill="green", tags="grip_open"
-        )
-        self.canvas.create_polygon( 195, 190, 180, 180, 180, 200,
-            fill="green", tags="grip_close"
-        )
+        self.canvas.create_polygon(175, 190, 185, 180, 185, 200,
+            fill="green", tags="grip_open")
+        self.canvas.create_polygon( 195, 190, 185, 180, 185, 200,
+            fill="green", tags="grip_close")
 
         # ===== ПРИВЯЗКА СОБЫТИЙ =====
         # XY movement
