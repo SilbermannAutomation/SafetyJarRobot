@@ -1,7 +1,7 @@
 import tkinter as tk
 
 class JoystickFrame(tk.Frame):
-    def init(self, master, robot_controller, **kwargs):
+    def __init__(self, master, robot_controller, **kwargs):
         super().init(master, **kwargs)
         self.robot = robot_controller
 
