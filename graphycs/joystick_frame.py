@@ -2,7 +2,7 @@ import tkinter as tk
 
 class JoystickFrame(tk.Frame):
     def __init__(self, master, robot_controller, **kwargs):
-        super().init(master, **kwargs)
+        super().__init__(master, **kwargs)
         self.robot = robot_controller
 
         self.canvas = tk.Canvas(self, width=200, height=200)
