@@ -5,11 +5,11 @@ class JoystickFrame(tk.Frame):
         super().__init__(master, **kwargs)
         self.robot = robot_controller
 
-        self.canvas = tk.Canvas(self, width=220, height=220, bg="white", highlightthickness=0)
+        self.canvas = tk.Canvas(self, width=220, height=240, bg="white", highlightthickness=0)
         self.canvas.grid(row=0, column=0)
 
-        # ===== СТАРЫЕ КНОПКИ =====
-        # Треугольники: Вверх, Вниз, Влево, Вправо
+        # ===== ОСНОВНЫЕ КНОПКИ =====
+        # Вверх, Вниз, Влево, Вправо
         self.canvas.create_polygon(110, 20, 100, 40, 120, 40,
             fill="green", tags="up")
         self.canvas.create_polygon(110, 200, 100, 180, 120, 180,
@@ -19,17 +19,17 @@ class JoystickFrame(tk.Frame):
         self.canvas.create_polygon(200, 110, 180, 100, 180, 120,
             fill="green", tags="right")
 
-        # Большие дуги в центре
+        # Большие дуги в центре (вращение оси 6)
         self.canvas.create_arc(70, 70, 150, 150, start=30, extent=120,
             style='arc', width=4, outline="blue", tags="rotate_cw")
         self.canvas.create_arc(70, 70, 150, 150, start=210, extent=120,
             style='arc', width=4, outline="red", tags="rotate_ccw")
 
-        # ===== НОВЫЕ КНОПКИ =====
-        # Z-axis ▲ ▼ (верхний левый угол)
-        self.canvas.create_polygon(40, 20, 30, 40, 50, 40,
+        # ===== ДОБАВЛЕННЫЕ КНОПКИ =====
+        # Z-axis ▲ ▼ (левый верхний угол)
+        self.canvas.create_polygon(40, 20, 30, 40, 50, 40,  # остриём вверх
             fill="green", tags="z_up")
-        self.canvas.create_polygon(40, 60, 30, 40, 50, 50,
+        self.canvas.create_polygon(40, 45, 30, 25, 50, 25,  # остриём вниз
             fill="green", tags="z_down")
 
         # Wrist ↻ ↺ (верхний правый угол, маленькие дуги)
@@ -38,10 +38,10 @@ class JoystickFrame(tk.Frame):
         self.canvas.create_arc(160, 20, 200, 60, start=210, extent=120,
             style='arc', width=3, outline="green", tags="wrist_ccw")
 
-        # Gripper ⏶ ⏷ (нижний правый угол, два треугольника)
-        self.canvas.create_polygon(180, 180, 170, 200, 190, 200,
+        # Gripper ⏶ ⏷ (нижний правый угол, соосные по X, близко друг к другу)
+        self.canvas.create_polygon(170, 190, 190, 190, 180, 175,  # остриём вверх
             fill="green", tags="grip_open")
-        self.canvas.create_polygon(180, 220, 170, 200, 190, 200,
+        self.canvas.create_polygon(170, 190, 190, 190, 180, 205,  # остриём вниз
             fill="green", tags="grip_close")
 
         # ===== ПРИВЯЗКА СОБЫТИЙ =====
@@ -50,16 +50,20 @@ class JoystickFrame(tk.Frame):
         self.canvas.tag_bind("down", "<Button-1>", lambda e: self.move(2, 10))
         self.canvas.tag_bind("left", "<Button-1>", lambda e: self.move(1, -10))
         self.canvas.tag_bind("right", "<Button-1>", lambda e: self.move(1, 10))
+
         # rotation (axis 6)
         self.canvas.tag_bind("rotate_cw", "<Button-1>", lambda e: self.move(6, 10))
         self.canvas.tag_bind("rotate_ccw", "<Button-1>", lambda e: self.move(6, -10))
-        # Z-axis
+
+        # Z-axis (axis 3)
         self.canvas.tag_bind("z_up", "<Button-1>", lambda e: self.move(3, 10))
         self.canvas.tag_bind("z_down", "<Button-1>", lambda e: self.move(3, -10))
+
         # wrist (axis 2)
         self.canvas.tag_bind("wrist_cw", "<Button-1>", lambda e: self.move(2, 10))
         self.canvas.tag_bind("wrist_ccw", "<Button-1>", lambda e: self.move(2, -10))
-        # gripper (axis 5 or 6, допустим 5)
+
+        # gripper (axis 5)
         self.canvas.tag_bind("grip_open", "<Button-1>", lambda e: self.move(5, 10))
         self.canvas.tag_bind("grip_close", "<Button-1>", lambda e: self.move(5, -10))
 
