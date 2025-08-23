@@ -1,8 +1,8 @@
 import tkinter as tk
 
 class JoystickFrame(tk.Frame):
-    def init(self, master, robot_controller, **kwargs):
-        super().init(master, **kwargs)
+    def __init__(self, master, robot_controller, **kwargs):
+        super().__init__(master, **kwargs)
         self.robot = robot_controller
 
         self.canvas = tk.Canvas(self, width=200, height=200, bg="white", highlightthickness=0)
