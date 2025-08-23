@@ -5,7 +5,7 @@ class JoystickFrame(tk.Frame):
         super().__init__(master, **kwargs)
         self.robot = robot_controller
 
-        self.canvas = tk.Canvas(self, width=220, height=220, bg="white", highlightthickness=0)
+        self.canvas = tk.Canvas(self, width=220, height=240, bg="white", highlightthickness=0)
         self.canvas.grid(row=0, column=0)
 
         # ===== СТАРЫЕ КНОПКИ =====
@@ -26,10 +26,10 @@ class JoystickFrame(tk.Frame):
             style='arc', width=4, outline="red", tags="rotate_ccw")
 
         # ===== НОВЫЕ КНОПКИ =====
-        # Z-axis ▲ ▼ (верхний левый угол)
+        # Z-axis ▲ ▼ (верхний левый угол, разнесены)
         self.canvas.create_polygon(40, 20, 30, 40, 50, 40,
             fill="green", tags="z_up")
-        self.canvas.create_polygon(40, 60, 30, 40, 50, 40,
+        self.canvas.create_polygon(40, 60, 30, 80, 50, 80,
             fill="green", tags="z_down")
 
         # Wrist ↻ ↺ (верхний правый угол, маленькие дуги)
@@ -38,10 +38,10 @@ class JoystickFrame(tk.Frame):
         self.canvas.create_arc(160, 20, 200, 60, start=210, extent=120,
             style='arc', width=3, outline="green", tags="wrist_ccw")
 
-        # Gripper ⏶ ⏷ (нижний правый угол, два треугольника)
+        # Gripper ⏶ ⏷ (нижний правый угол, разнесены)
         self.canvas.create_polygon(180, 180, 170, 200, 190, 200,
             fill="green", tags="grip_open")
-        self.canvas.create_polygon(180, 220, 170, 200, 190, 200,
+        self.canvas.create_polygon(180, 220, 170, 240, 190, 240,
             fill="green", tags="grip_close")
 
         # ===== ПРИВЯЗКА СОБЫТИЙ =====
@@ -59,7 +59,7 @@ class JoystickFrame(tk.Frame):
         # wrist (axis 2)
         self.canvas.tag_bind("wrist_cw", "<Button-1>", lambda e: self.move(2, 10))
         self.canvas.tag_bind("wrist_ccw", "<Button-1>", lambda e: self.move(2, -10))
-        # gripper (axis 5 or 6, допустим 5)
+        # gripper (axis 5)
         self.canvas.tag_bind("grip_open", "<Button-1>", lambda e: self.move(5, 10))
         self.canvas.tag_bind("grip_close", "<Button-1>", lambda e: self.move(5, -10))
 
