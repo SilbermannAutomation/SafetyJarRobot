@@ -1,7 +1,7 @@
 import ros_robot_controller_sdk as rrc
 
 class RobotController:
-    def _init_(self, port="/dev/serial0", baudrate=1_000_000):
+    def __init__(self, port="/dev/serial0", baudrate=1_000_000):
         self._board = rrc.Board(device=port, baudrate=baudrate, timeout=5)
         self._board.enable_reception(True)
         self._enable_torque()
