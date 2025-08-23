@@ -18,6 +18,6 @@ class RobotController:
                 pass
 
     def move_servo(self, axis_id, pulse):
-        self._board.bus_servoset_position(0.5, [[axis_id, int(pulse)]])
+        self._board.bus_servo_set_position(0.5, [[axis_id, int(pulse)]])
 
 
