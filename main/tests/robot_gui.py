@@ -65,7 +65,7 @@ for i in range(AXES):
     btn.pack(side="left", padx=5)
 
 # кнопка обновления позиций
-refresh_btn = tk.Button(root, text="Refresh positions", command=refresh_positions)
-refresh_btn.pack(pady=10)
+# refresh_btn = tk.Button(root, text="Refresh positions", command=refresh_positions)
+# refresh_btn.pack(pady=10)
 
 root.mainloop()
