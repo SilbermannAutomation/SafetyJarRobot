@@ -1,35 +1,21 @@
-robot_gui.py
-import tkinter as tk
 import ros_robot_controller_sdk as rrc
 
-# Инициализация платы один раз
-board = rrc.Board(device="/dev/serial0", baudrate=1_000_000, timeout=5)
-board.enable_reception(True)
+class RobotController:
+    def _init_(self, port="/dev/serial0", baudrate=1_000_000):
+        self.board = rrc.Board(device=port, baudrate=baudrate, timeout=5)
+        self.board.enable_reception(True)
+        self._enable_torque()
 
-def move_servo(axis, pulse):
-    board.bus_servoset_position(0.5, [[axis, int(pulse)]])
+    def _enable_torque(self):
+        try:
+            self.board.bus_servo_enable_torque(254, 1)
+        except Exception:
+            pass
+        for sid in range(1, 7):
+            try:
+                self.board.bus_servo_enable_torque(sid, 1)
+            except Exception:
+                pass
 
-def create_axis_control(root, axis_num):
-    frame = tk.Frame(root)
-    frame.pack()
-
-    label = tk.Label(frame, text=f"Axis {axis_num}")
-    label.pack(side="left")
-
-    pulse_entry = tk.Entry(frame)
-    pulse_entry.pack(side="left")
-
-    def run():
-        pulse = pulse_entry.get()
-        if pulse.isdigit():
-            move_servo(axis_num, int(pulse))
-    run_button = tk.Button(frame, text="RUN", command=run)
-    run_button.pack(side="left")
-
-root = tk.Tk()
-root.title("Robot Control")
-
-for i in range(1, 7):
-    create_axis_control(root, i)
-
-root.mainloop()
+    def move_servo(self, axis_id, pulse):
+        self.board.bus_servoset_position(0.5, [[axis_id, int(pulse)]])
