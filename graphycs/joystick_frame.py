@@ -10,13 +10,13 @@ class JoystickFrame(tk.Frame):
 
         # Треугольники: Вверх, Вниз, Влево, Вправо
         self.canvas.create_polygon(100, 20, 90, 40, 110, 40,
-            fill="lightgreen", tags="up")
+            fill="green", tags="up")
         self.canvas.create_polygon(100, 180, 90, 160, 110, 160,
-            fill="lightgreen", tags="down")
+            fill="green", tags="down")
         self.canvas.create_polygon(20, 100, 40, 90, 40, 110,
-            fill="lightgreen", tags="left")
+            fill="green", tags="left")
         self.canvas.create_polygon(180, 100, 160, 90, 160, 110,
-            fill="lightgreen", tags="right")
+            fill="green", tags="right")
 
         # Полукруги для вращения (по и против часовой)
         self.canvas.create_arc(60, 60, 140, 140, start=30, extent=120,
