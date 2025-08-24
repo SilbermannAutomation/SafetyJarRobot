@@ -10,10 +10,6 @@ if __name__ == "__main__":
         print(f"Motor ID {i.id} named '{i.name}' status: {i.readStatus()}")
         print(f"  Position: {i.readPosition(units='deg')} deg")
 
-    while True:
-        for i in SERVOS:
-            print("Position:", i.readPosition(units='deg'), "degrees", f"(Motor ID {i.id})")
-
     # Simple demo: set up one motor and try a few moves.
     # Adjust SERVO_ID below.
     # SERVO_ID = 2
