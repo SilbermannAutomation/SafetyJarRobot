@@ -34,18 +34,18 @@ class RobotGUI(tk.Tk):
         for i, label in enumerate(AXIS_LABELS):    
             tk.Label(self, text=f"{i+1}. {label}", anchor="w").grid(row=i, column=0, padx=10, pady=5, sticky="w")
 
-            sb = tk.Spinbox(self, from_=0, to=1000, width=5)
+            sb = tk.Spinbox(self, from_=0, to=1000, width=5, validate="key", validatecommand=vcmd)
+            sb.delete(0, "end")
             sb.insert(0, "500")
             sb.grid(row=i, column=1, padx=5)
             self.spinboxes.append(sb)
 
-
             radio = tk.Radiobutton(self, variable=self.selected_axis, value=i)
             radio.grid(row=i, column=2, padx=5)
 
-        tk.Button(self, text="START", width=10, command=self.start_selected_axis).grid(row=len(AXIS_LABELS), column=3, pady=20)
-        tk.Button(self, image=self.up_img, command=lambda: self.start_jog(self.selected_axis.get(), 1)).grid(row=len(AXIS_LABELS), column=4)
-        tk.Button(self, image=self.down_img, command=lambda: self.start_jog(self.selected_axis.get(), -1)).grid(row=len(AXIS_LABELS), column=5)
+        tk.Button(self, text="START", width=10, command=self.start_selected_axis).grid(row=3, column=3, pady=20)
+        tk.Button(self, image=self.up_img, command=lambda: self.start_jog(self.selected_axis.get(), 1)).grid(row=3, column=4)
+        tk.Button(self, image=self.down_img, command=lambda: self.start_jog(self.selected_axis.get(), -1)).grid(row=3, column=5)
 
     def validate_input(self, value_if_allowed):
         if value_if_allowed == "":
