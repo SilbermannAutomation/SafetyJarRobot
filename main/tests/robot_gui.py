@@ -13,8 +13,8 @@ AXIS_LABELS = [
 ]
 
 class RobotGUI(tk.Tk):
-    def init(self):
-        super().init()
+    def __init__(self):
+        super().__init__()
         self.title("Robot GUI")
         self.controller = RobotController()
         self.spinboxes = []
