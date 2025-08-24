@@ -22,6 +22,8 @@ class RobotGUI(tk.Tk):
         self.option_add("*Font", DEFAULT_FONT)
 
         self.bind("<F1>", lambda event: self.initialize_all_axes())
+        self.bind("<Up>", lambda event: self.start_jog(self.selected_axis.get(), 1))
+        self.bind("<Down>", lambda event: self.start_jog(self.selected_axis.get(), -1))
 
         self.controller = RobotController()
         self.spinboxes = []
