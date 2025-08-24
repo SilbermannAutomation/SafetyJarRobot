@@ -38,6 +38,7 @@ class MotorManager:
         durations = []
         pulse_targets = []
 
+        print(f"[MotorManager] Preparing synchronized move for {len(target_pulses_dict)} motors")
         # Step 1: compute durations and clamp target pulses
         for name, target in target_pulses_dict.items():
             motor = self.get_motor(name)
@@ -64,6 +65,7 @@ class MotorManager:
 
         max_dur = max(durations)
 
+        print(f"[MotorManager] Moving {len(pulse_targets)} motors to targets with max duration {max_dur:.2f}s")
         # Step 2: send all servo commands in one call (same duration)
         board = _BoardSingleton.get()
         board.bus_servo_set_position(max_dur, pulse_targets)
