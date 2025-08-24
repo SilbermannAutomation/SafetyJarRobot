@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     while True:
         for i in SERVOS:
-            print("Position:", i.readPosition(units='pulses'), "pulses", f"(Motor ID {i.id})")
+            print("Position:", i.readPosition(units='deg'), "degrees", f"(Motor ID {i.id})")
 
     # Simple demo: set up one motor and try a few moves.
     # Adjust SERVO_ID below.
