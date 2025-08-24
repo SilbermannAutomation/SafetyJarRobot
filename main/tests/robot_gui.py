@@ -39,7 +39,7 @@ for i, name in enumerate(AXIS_NAMES):
     sb.pack(side="left", padx=5)
     spinboxes.append(sb)
 
-    tk.Button(frame, image=down_img, command=lambda axis=i: move_delta(axis, -10, spinboxes)).pack(side="left", padx=2)
-    tk.Button(frame, image=up_img, command=lambda axis=i: move_delta(axis, 10, spinboxes)).pack(side="left", padx=2)
+    tk.Button(frame, image=down_img, command=lambda axis=i+1: move_delta(axis, -10, spinboxes)).pack(side="left", padx=2)
+    tk.Button(frame, image=up_img, command=lambda axis=i+1: move_delta(axis, 10, spinboxes)).pack(side="left", padx=2)
 
 root.mainloop()
