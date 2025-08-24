@@ -24,6 +24,8 @@ class RobotGUI(tk.Tk):
         self.bind("<F1>", lambda event: self.initialize_all_axes())
         self.bind("<Up>", lambda event: self.start_jog(self.selected_axis.get(), 1))
         self.bind("<Down>", lambda event: self.start_jog(self.selected_axis.get(), -1))
+        for i in range(6):
+            self.bind(str(i + 1), lambda e, idx=i: self.selected_axis.set(idx))
 
         self.controller = RobotController()
         self.spinboxes = []
