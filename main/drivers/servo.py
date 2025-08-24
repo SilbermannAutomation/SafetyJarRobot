@@ -65,10 +65,10 @@ class Motor:
 
     # ---------- torque ----------
     def turnOnTorque(self):
-        self.board.bus_servo_enable_torque(self.id, 1)
+        self.board.bus_servo_enable_torque(self.id, True)
 
     def turnOffTorque(self):
-        self.board.bus_servo_enable_torque(self.id, 0)
+        self.board.bus_servo_enable_torque(self.id, False)
 
     # ---------- reads ----------
     def readPosition(self, units: str = "pulses"):
