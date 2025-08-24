@@ -28,7 +28,7 @@ class MotorManager:
 
     def synchronized_move_pulses(self, target_pulses_dict: dict, velocity=300, hold=True):
         """
-        Move all specified motors to their target pulse positions (0–1000),
+        Move all specified motors to their target pulse positions (0-1000),
         synchronizing so that all arrive at the same time.
 
         Args:
