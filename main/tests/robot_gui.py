@@ -18,7 +18,7 @@ class RobotGUI(tk.Tk):
         super().__init__()
         self.title("Robot GUI")
         self.option_add("*Font", DEFAULT_FONT)  # sets default font for 
-        self.geometry("1200x900")  # width x height, adjust as needed
+        self.geometry("800x600")  # width x height, adjust as needed
         self.controller = RobotController()
         self.spinboxes = []
 
