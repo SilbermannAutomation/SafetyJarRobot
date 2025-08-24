@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 import os, threading, time
+from drivers.motor_manager import MotorManager
 
 app = Flask(__name__)
+manager = MotorManager("../controller/servo_map.json")
 
 def run_job(values):
     """
@@ -10,13 +12,22 @@ def run_job(values):
     """
     print(f"[RUN] Received values: {values}")
     # Simulate some work
-    time.sleep(2)
+    # Move all servos to specific pulses, synchronized
+    target_positions = {
+        "base_yaw": values[0],
+        "shoulder": values[1],
+        "elbow": values[2],
+        "wrist_pitch": values[3],
+        "wrist_roll": values[4],
+        "gripper": values[5]
+    }
+    manager.synchronized_move_pulses(target_positions, velocity=350, hold=True)
     print("[RUN] Job completed")
 
 @app.route("/", methods=["GET"])
 def index():
-    # Default values (0-100)
-    defaults = [50, 50, 50, 50, 50, 50]
+    # Default values (0-1000) for six servos
+    defaults = [500, 500, 500, 500, 500, 500]
     return render_template("index.html", defaults=defaults)
 
 @app.route("/run", methods=["POST"])
