@@ -34,7 +34,7 @@ class RobotGUI(tk.Tk):
                 validatecommand=vcmd, width=6
             )
             sb.delete(0, "end")
-            sb.insert(0, "100")
+            sb.insert(0, "500")
             sb.pack(side="left", padx=5)
             self.spinboxes.append(sb)
 
