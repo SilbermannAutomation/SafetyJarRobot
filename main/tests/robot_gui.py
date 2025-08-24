@@ -27,32 +27,21 @@ class RobotGUI(tk.Tk):
         vcmd = (self.register(self.validate_input), "%P")
 
         for i, label in enumerate(AXIS_LABELS):
-            frame = tk.Frame(self)
-            frame.pack(padx=10, pady=5)
+            tk.Label(self, text=f"{i+1}. {label}", anchor="w").grid(row=i, column=0, padx=10, pady=5, sticky="w")
 
-            tk.Label(frame, text=f"{i+1}. {label}").pack(side="left", padx=5)
+            spinbox = tk.Spinbox(self, from_=0, to=1000, width=5)
+            spinbox.grid(row=i, column=1, padx=5)
+            self.spinboxes.append(spinbox)
 
-            sb = tk.Spinbox(
-                frame, from_=0, to=1000, validate="key",
-                validatecommand=vcmd, width=6
-            )
-            sb.delete(0, "end")
-            sb.insert(0, "500")
-            sb.pack(side="left", padx=5)
-            self.spinboxes.append(sb)
+            start_button = tk.Button(self, text="START", width=8, command=lambda a=i: self.start_axis(a))
+            start_button.grid(row=i, column=2, padx=5)
 
-            start_btn = tk.Button(frame, text="START", command=lambda axis=i+1: self.run_axis(axis))
-            start_btn.pack(side="left", padx=5)
+            down_button = tk.Button(self, image=self.down_image, command=lambda a=i: self.start_jog(a, -1))
+            down_button.grid(row=i, column=3, padx=2)
 
-            down_btn = tk.Button(frame, image=self.down_img)
-            down_btn.pack(side="left", padx=2)
-            down_btn.bind("<ButtonPress>", lambda e, a=i+1: self.start_jog(a, -10))
-            down_btn.bind("<ButtonRelease>", lambda e: self.stop_jog())
+            up_button = tk.Button(self, image=self.up_image, command=lambda a=i: self.start_jog(a, 1))
+            up_button.grid(row=i, column=4, padx=2)
 
-            up_btn = tk.Button(frame, image=self.up_img)
-            up_btn.pack(side="left", padx=2)
-            up_btn.bind("<ButtonPress>", lambda e, a=i+1: self.start_jog(a, 10))
-            up_btn.bind("<ButtonRelease>", lambda e: self.stop_jog())
 
         self.jogging = False
 
