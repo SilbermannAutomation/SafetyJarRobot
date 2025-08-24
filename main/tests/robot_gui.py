@@ -22,8 +22,8 @@ class RobotGUI(tk.Tk):
         self.controller = RobotController()
         self.spinboxes = []
 
-        self.up_img = ImageTk.PhotoImage(Image.open("assets/up.png").resize((20, 20)))
-        self.down_img = ImageTk.PhotoImage(Image.open("assets/down.png").resize((20, 20)))
+        self.up_img = ImageTk.PhotoImage(Image.open("assets/up.png").resize((40, 40)))
+        self.down_img = ImageTk.PhotoImage(Image.open("assets/down.png").resize((40, 40)))
         vcmd = (self.register(self.validate_input), "%P")
 
         for i, label in enumerate(AXIS_LABELS):
