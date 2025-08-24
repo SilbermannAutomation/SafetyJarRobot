@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 from robot_control import RobotController
+DEFAULT_FONT = ("Arial", 20)  # or any preferred font & size
 
 AXIS_LABELS = [
     "Gripper",     # Axis 1
@@ -16,6 +17,7 @@ class RobotGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Robot GUI")
+        self.option_add("*Font", DEFAULT_FONT)  # sets default font for 
         self.controller = RobotController()
         self.spinboxes = []
 
