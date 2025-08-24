@@ -1,5 +1,6 @@
 from drivers.servo import Motor
 import time
+from main.drivers.motor_manager import MotorManager
 
 # ----------- Example usage -----------
 if __name__ == "__main__":
@@ -11,6 +12,7 @@ if __name__ == "__main__":
         servo.goToPosition(500, duration=0.5, hold=True)
 
     time.sleep(2)
+    
 
     # SERVOS[0].goToPosition(530, duration=0.5, hold=True)
     # SERVOS[1].goToPosition(498, duration=0.5, hold=True)
