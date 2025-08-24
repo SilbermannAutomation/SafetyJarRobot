@@ -38,7 +38,7 @@ def run_job(values):
 
 @app.route("/", methods=["GET"])
 def index():
-    defaults = [500]*6
+    defaults = [("Base Yaw", 500), ("Shoulder", 500), ("Elbow", 500), ("Wrist Pitch", 500), ("Wrist Roll", 500), ("Gripper", 500)]
     return render_template("index.html", defaults=defaults)
 
 @app.route("/run", methods=["POST"])
