@@ -33,7 +33,7 @@ def run_job(values):
         "wrist_roll": values[4],
         "gripper": values[5]
     }
-    manager.synchronized_move_pulses(target_positions, velocity=350, hold=True)
+    manager.synchronized_move_pulses(target_positions, velocity=350, hold=False)
     print("[RUN] Job completed")
 
 @app.route("/", methods=["GET"])

@@ -78,6 +78,6 @@ class MotorManager:
                 motor = self.get_motor(name)
                 if motor:
                     try:
-                        motor.turnOffTorque()
+                        motor.turn_off_torque()
                     except Exception:
                         pass
