@@ -38,7 +38,7 @@ def run_job(values):
 
 @app.route("/", methods=["GET"])
 def index():
-    defaults = [50]*6
+    defaults = [500]*6
     return render_template("index.html", defaults=defaults)
 
 @app.route("/run", methods=["POST"])
