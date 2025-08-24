@@ -29,12 +29,13 @@ class RobotGUI(tk.Tk):
         self.up_img = ImageTk.PhotoImage(Image.open("assets/up.png").resize((40, 40)))
         self.down_img = ImageTk.PhotoImage(Image.open("assets/down.png").resize((40, 40)))
 
-        vcmd = self.register(self.validate_input)
+        vcmd = (self.register(self.validate_input), "%P")
 
         for i, label in enumerate(AXIS_LABELS):    
             tk.Label(self, text=f"{i+1}. {label}", anchor="w").grid(row=i, column=0, padx=10, pady=5, sticky="w")
 
-            sb = tk.Spinbox(self, from_=0, to=1000, width=5, validate="key", validatecommand=(vcmd, "%P"))
+            # sb = tk.Spinbox(self, from_=0, to=1000, width=5, validate="key", validatecommand=vcmd)
+            sb = tk.Spinbox(self, from_=0, to=1000, width=5)
             sb.delete(0, "end")
             sb.insert(0, "500")
             sb.grid(row=i, column=1, padx=5)
