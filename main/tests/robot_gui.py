@@ -47,6 +47,9 @@ class RobotGUI(tk.Tk):
         tk.Button(self, text="START", width=10, command=self.start_selected_axis).grid(row=3, column=3, pady=20)
         tk.Button(self, image=self.up_img, command=lambda: self.start_jog(self.selected_axis.get(), 1)).grid(row=3, column=4)
         tk.Button(self, image=self.down_img, command=lambda: self.start_jog(self.selected_axis.get(), -1)).grid(row=3, column=5)
+        tk.Button(self, text="INITIALIZE", width=10, command=self.initialize_all_axes).grid(
+                    row=0, column=3, pady=10)
+
 
     def validate_input(self, value_if_allowed):
         if value_if_allowed == "":
@@ -62,6 +65,13 @@ class RobotGUI(tk.Tk):
         axis = self.selected_axis.get()
         value = int(self.spinboxes[axis].get())
         self.controller.move_axis(axis + 1, value)
+
+    def initialize_all_axes(self):
+        for i, sb in enumerate(self.spinboxes):
+            sb.delete(0, "end")
+            sb.insert(0, "500")
+            self.controller.move_axis(i + 1, 500)
+
 
     def start_jog(self, axis, delta):
         if self.jogging:
