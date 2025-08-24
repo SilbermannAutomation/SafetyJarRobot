@@ -1,8 +1,8 @@
 import json
 import os
-from servo import Motor
-from utils.util import Util  # Needed for deg↔pulses conversion
-from controller.control_board_singleton import _BoardSingleton
+import time
+from drivers.servo import Motor
+from utils.util import Util  # for clamping
 
 class MotorManager:
     def __init__(self, json_path='servo_map.json'):
@@ -19,62 +19,57 @@ class MotorManager:
         for name, servo_id in servo_map.items():
             self.motors[name] = Motor(servo_id, name=name)
 
-    def get_motor(self, name):
+    def get_motor(self, name) -> Motor:
         return self.motors.get(name)
 
     def all_names(self):
         return list(self.motors.keys())
 
-    def synchronized_move_deg(self, target_angles: dict, hold=True):
+    def synchronized_move_pulses(self, target_pulses_dict: dict, hold=True):
         """
-        Move all given motors to their respective target angles (in degrees),
-        such that all arrive simultaneously. Requires current position readout.
+        Move all specified motors to their target pulse positions (0–1000),
+        synchronizing so that all arrive at the same time.
+
         Args:
-            target_angles: dict of {motor_name: target_deg}
-            hold: whether to hold position after move
+            target_pulses_dict: dict {motor_name: pulse_target}
+            hold: if False, torque will be released after the move
         """
         durations = []
         pulse_targets = []
 
-        # Step 1: compute all target pulses and durations
-        for name, target_deg in target_angles.items():
+        # Step 1: compute durations and clamp target pulses
+        for name, target in target_pulses_dict.items():
             motor = self.get_motor(name)
             if motor is None:
                 raise ValueError(f"Motor '{name}' not found")
 
-            target_pulses = Util.pulses_from_deg(target_deg, motor.range_deg)
-            target_pulses = Util._clamp(target_pulses, motor.soft_min, motor.soft_max)
+            target = Util._clamp(int(target), motor.soft_min, motor.soft_max)
+            current = motor.readPosition(units="pulses")
+            if current is None:
+                current = target
 
-            current_pulses = motor.readPosition(units="pulses")
-            if current_pulses is None:
-                current_pulses = target_pulses  # fallback
+            distance = abs(target - current)
+            default_velocity = 4.17  # 1000 pulses / 240 deg/s
+            duration = distance / default_velocity if distance > 0 else motor.MIN_DURATION_S
+            duration = Util._clamp(duration, motor.MIN_DURATION_S, motor.MAX_DURATION_S)
 
-            distance = abs(target_pulses - current_pulses)
-            # assume default velocity: 240 deg/s
-            pulses_per_deg = 1000.0 / motor.range_deg
-            default_velocity = 240.0 * pulses_per_deg
-            dur = distance / default_velocity if distance > 0 else 0.15
-            durations.append(Util._clamp(dur, motor.MIN_DURATION_S, motor.MAX_DURATION_S))
+            durations.append(duration)
+            pulse_targets.append((motor.id, target))
 
-            pulse_targets.append((motor.id, int(target_pulses)))
-
-        if not durations:
+        if not pulse_targets:
             return
 
-        # Step 2: compute max duration so all arrive together
         max_dur = max(durations)
 
-        # Step 3: send all move commands in one batch
-        if pulse_targets:
-            _BoardSingleton.get().bus_servo_set_position(max_dur, pulse_targets)
+        # Step 2: send all servo commands in one call (same duration)
+        board = Motor._BoardSingleton.get()
+        board.bus_servo_set_position(max_dur, pulse_targets)
 
-        # Optional wait
-        import time
         time.sleep(max_dur + 0.1)
 
-        # Step 4: handle hold/release
+        # Step 3: release torque if hold is False
         if not hold:
-            for name in target_angles:
+            for name in target_pulses_dict:
                 motor = self.get_motor(name)
                 if motor:
                     try:
