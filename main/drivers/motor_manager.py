@@ -25,6 +25,11 @@ class MotorManager:
 
     def all_names(self):
         return list(self.motors.keys())
+    
+    def print_all_positions(self, units="pulses"):
+        for name, motor in self.motors.items():
+            pos = motor.readPosition(units=units)
+            print(f"  {name} (ID {motor.id}): {pos} {units}")
 
     def synchronized_move_pulses(self, target_pulses_dict: dict, velocity=300, hold=True):
         """
