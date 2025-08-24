@@ -3,7 +3,7 @@ import os, threading, time
 from drivers.motor_manager import MotorManager
 
 app = Flask(__name__)
-manager = MotorManager("../controller/servo_map.json")
+manager = MotorManager("controller/servo_map.json")
 
 def run_job(values):
     """
@@ -28,7 +28,7 @@ def run_job(values):
 def index():
     # Default values (0-1000) for six servos
     defaults = [500, 500, 500, 500, 500, 500]
-    return render_template("index.html", defaults=defaults)
+    return render_template("networking/index.html", defaults=defaults)
 
 @app.route("/run", methods=["POST"])
 def run():
