@@ -1,8 +1,45 @@
 from flask import Flask, render_template, request, jsonify
 import os, threading, time
 from drivers.motor_manager import MotorManager
+# app.py
+from pathlib import Path
 
-app = Flask(__name__)
+BASE_DIR = Path(__file__).resolve().parent
+TEMPLATE_DIR = BASE_DIR / "networking/templates"  # change to where your index.html lives
+
+app = Flask(
+    __name__,
+    template_folder=str(TEMPLATE_DIR),
+    static_url_path="/static"             # optional (default is /static)
+)
+
+app.config["TEMPLATES_AUTO_RELOAD"] = True  # handy during development
+
+def run_job(values):
+    print(f"[RUN] Received values: {values}")
+    time.sleep(2)
+    print("[RUN] Job completed")
+
+@app.route("/", methods=["GET"])
+def index():
+    defaults = [50]*6
+    return render_template("index.html", defaults=defaults)
+
+@app.route("/run", methods=["POST"])
+def run():
+    vals = [request.form.get(f"p{i}", type=float) for i in range(1, 7)]
+    if any(v is None for v in vals):
+        return {"status": "error", "message": "Missing parameters"}, 400
+    threading.Thread(target=run_job, args=(vals,), daemon=True).start()
+    return {"status": "ok", "values": vals}
+
+if __name__ == "__main__":
+    use_https = os.getenv("USE_HTTPS", "0") == "1"
+    host = "0.0.0.0"
+    if use_https:
+        app.run(host=host, port=5001, ssl_context=("cert.pem", "key.pem"))
+    else:
+        app.run(host=host, port=5000)
 manager = MotorManager("controller/servo_map.json")
 
 def run_job(values):
@@ -28,7 +65,7 @@ def run_job(values):
 def index():
     # Default values (0-1000) for six servos
     defaults = [500, 500, 500, 500, 500, 500]
-    return render_template("networking/index.html", defaults=defaults)
+    return render_template("index.html", defaults=defaults)
 
 @app.route("/run", methods=["POST"])
 def run():
