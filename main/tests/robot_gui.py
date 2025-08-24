@@ -16,7 +16,7 @@ DEFAULT_FONT = ("Arial", 14)
 
 class RobotGUI(tk.Tk):
     def __init__(self):
-        super().init()
+        super().__init__()
         self.title("Robot GUI")
         self.geometry("800x400")
         self.option_add("*Font", DEFAULT_FONT)
