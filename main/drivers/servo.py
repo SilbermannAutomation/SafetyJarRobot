@@ -188,7 +188,7 @@ class Motor:
         # Release torque unless told to hold
         if hold is False:
             try:
-                self.turnOffTorque()
+                self.turn_off_torque()
             except Exception:
                 pass
 

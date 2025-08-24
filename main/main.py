@@ -5,10 +5,15 @@ if __name__ == "__main__":
     MOTOR_IDS = [1, 2, 3, 4, 5, 6]
     SERVOS = [Motor(sid, device="/dev/serial0", baud=1_000_000, name=f"motor{sid}", range_deg=240.0) for sid in MOTOR_IDS]
 
-    for i in SERVOS:
-        i.turn_off_torque()
-        print(f"Motor ID {i.id} named '{i.name}' status: {i.readStatus()}")
-        print(f"  Position: {i.readPosition(units='deg')} deg")
+    for servo in SERVOS:
+        servo.turn_on_torque()
+
+    SERVOS[0].goToPosition(422, duration=0.5, hold=True)
+    SERVOS[1].goToPosition(498, duration=0.5, hold=True)
+    SERVOS[2].goToPosition(711, duration=0.5, hold=True)
+    SERVOS[3].goToPosition(0, duration=0.5, hold=True)
+    SERVOS[4].goToPosition(277, duration=0.5, hold=True)
+    SERVOS[5].goToPosition(497, duration=0.5, hold=True)
 
     # Simple demo: set up one motor and try a few moves.
     # Adjust SERVO_ID below.
