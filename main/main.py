@@ -1,4 +1,5 @@
 from drivers.servo import Motor
+import time
 
 # ----------- Example usage -----------
 if __name__ == "__main__":
@@ -7,13 +8,16 @@ if __name__ == "__main__":
 
     for servo in SERVOS:
         servo.turn_on_torque()
+        servo.goToPosition(500, duration=0.5, hold=True)
 
-    SERVOS[0].goToPosition(422, duration=0.5, hold=True)
+    time.sleep(2)
+
+    SERVOS[0].goToPosition(530, duration=0.5, hold=True)
     SERVOS[1].goToPosition(498, duration=0.5, hold=True)
-    SERVOS[2].goToPosition(711, duration=0.5, hold=True)
+    SERVOS[2].goToPosition(710, duration=0.5, hold=True)
     SERVOS[3].goToPosition(0, duration=0.5, hold=True)
-    SERVOS[4].goToPosition(277, duration=0.5, hold=True)
-    SERVOS[5].goToPosition(497, duration=0.5, hold=True)
+    SERVOS[4].goToPosition(260, duration=0.5, hold=True)
+    SERVOS[5].goToPosition(500, duration=0.5, hold=True)
 
     # Simple demo: set up one motor and try a few moves.
     # Adjust SERVO_ID below.
