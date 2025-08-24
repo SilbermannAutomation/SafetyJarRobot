@@ -1,90 +1,63 @@
-import tkinter as tk
-from tkinter import messagebox
-from PIL import Image, ImageTk
-from robot_control import RobotController
+import ros_robot_controller_sdk as rrc
+import time
+import logging
 
-AXIS_LABELS = [
-    "Gripper",     # Axis 1
-    "Wrist",       # Axis 2
-    "Forearm",     # Axis 3
-    "Shoulder",    # Axis 4
-    "Lower Shoulder",  # Axis 5
-    "Base"         # Axis 6
-]
 
-class RobotGUI(tk.Tk):
-    def init(self):
-        super().init()
-        self.title("Robot GUI")
-        self.controller = RobotController()
-        self.spinboxes = []
+class RobotController:
+    def __init__(self, port="/dev/serial0", baud=1_000_000, axes=6):
+        self.axes = axes  # количество осей
+        self._board = rrc.Board(device=port, baudrate=baud, timeout=5)
+        self._board.enable_reception(True)
 
-        self.up_img = ImageTk.PhotoImage(Image.open("assets/up.png").resize((20, 20)))
-        self.down_img = ImageTk.PhotoImage(Image.open("assets/down.png").resize((20, 20)))
-        vcmd = (self.register(self.validate_input), "%P")
+        # настройка логирования
+        logging.basicConfig(
+            level=logging.INFO,
+            format="[%(levelname)s] %(asctime)s - %(message)s",
+            datefmt="%H:%M:%S"
+        )
 
-        for i, label in enumerate(AXIS_LABELS):
-            frame = tk.Frame(self)
-            frame.pack(padx=10, pady=5)
+        self._enable_torque()
 
-            tk.Label(frame, text=f"{i+1}. {label}").pack(side="left", padx=5)
+    def _enable_torque(self):
+        """Включает питание (torque) на всех осях"""
+        for sid in range(1, self.axes + 1):
+            try:
+                self._board.bus_servo_enable_torque(sid, 1)
+                time.sleep(0.01)
+                logging.info(f"Torque enabled on axis {sid}")
+            except Exception as e:
+                logging.error(f"Failed to enable torque on axis {sid}: {e}")
 
-            sb = tk.Spinbox(
-                frame, from_=0, to=1000, validate="key",
-                validatecommand=vcmd, width=6
-            )
-            sb.delete(0, "end")
-            sb.insert(0, "100")
-            sb.pack(side="left", padx=5)
-            self.spinboxes.append(sb)
-
-            start_btn = tk.Button(frame, text="START", command=lambda axis=i+1: self.run_axis(axis))
-            start_btn.pack(side="left", padx=5)
-
-            down_btn = tk.Button(frame, image=self.down_img)
-            down_btn.pack(side="left", padx=2)
-            down_btn.bind("<ButtonPress>", lambda e, a=i+1: self.start_jog(a, -10))
-            down_btn.bind("<ButtonRelease>", lambda e: self.stop_jog())
-
-            up_btn = tk.Button(frame, image=self.up_img)
-            up_btn.pack(side="left", padx=2)
-            up_btn.bind("<ButtonPress>", lambda e, a=i+1: self.start_jog(a, 10))
-            up_btn.bind("<ButtonRelease>", lambda e: self.stop_jog())
-
-        self.jogging = False
-
-    def validate_input(self, P):
-        return P.isdigit() and 0 <= int(P) <= 1000 or P == ""
-
-    def run_axis(self, axis_num):
+    def move_axis(self, axis_id, pulse):
+        """Двигает одну ось"""
         try:
-            pulse = int(self.spinboxes[axis_num - 1].get())
-            self.controller.move_axis(axis_num, pulse)
+            self._board.bus_servo_set_position(0.5, [[axis_id, int(pulse)]])
+            logging.debug(f"Axis {axis_id} -> {pulse}")
+            return True
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+            logging.error(f"Error moving axis {axis_id}: {e}")
+            return False
 
-    def start_jog(self, axis, delta):
-        self.jogging = True
-        self._jog(axis, delta)
-
-    def _jog(self, axis, delta):
-        if not self.jogging:
-            return
+    def move_axes(self, axes_dict):
+        """
+        Двигает несколько осей сразу.
+        axes_dict = {axis_id: pulse, ...}
+        """
         try:
-            pulse = int(self.spinboxes[axis - 1].get()) + delta
-            pulse = max(0, min(1000, pulse))
-            self.spinboxes[axis - 1].delete(0, "end")
-            self.spinboxes[axis - 1].insert(0, str(pulse))
-            self.controller.move_axis(axis, pulse)
+            positions = [[axis, int(pulse)] for axis, pulse in axes_dict.items()]
+            self._board.bus_servo_set_position(0.5, positions)
+            logging.debug(f"Axes moved: {axes_dict}")
+            return True
         except Exception as e:
-            print(f"Jogging error: {e}")
-        self.after(200, lambda: self._jog(axis, delta))
+            logging.error(f"Error moving axes: {e}")
+            return False
 
-    def stop_jog(self):
-        self.jogging = False
-
-        if __name__ == "__main__":
-            app = RobotGUI()
-            app.mainloop()
-            
-    #end
+    def get_axis_position(self, axis_id):
+        """Читает позицию оси (если SDK поддерживает)"""
+        try:
+            pos = self._board.bus_servo_read_position(axis_id)
+            logging.debug(f"Axis {axis_id} position = {pos}")
+            return pos
+        except Exception as e:
+            logging.error(f"Error reading axis {axis_id}: {e}")
+            return None
