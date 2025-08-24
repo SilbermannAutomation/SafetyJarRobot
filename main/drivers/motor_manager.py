@@ -3,6 +3,7 @@ import os
 import time
 from drivers.servo import Motor
 from utils.util import Util  # for clamping
+from controller.control_board_singleton import _BoardSingleton
 
 class MotorManager:
     def __init__(self, json_path='servo_map.json'):
@@ -62,7 +63,7 @@ class MotorManager:
         max_dur = max(durations)
 
         # Step 2: send all servo commands in one call (same duration)
-        board = Motor._BoardSingleton.get()
+        board = _BoardSingleton.get()
         board.bus_servo_set_position(max_dur, pulse_targets)
 
         time.sleep(max_dur + 0.1)
