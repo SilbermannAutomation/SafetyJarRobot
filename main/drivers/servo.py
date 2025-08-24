@@ -61,7 +61,7 @@ class Motor:
         # soft software clamps (optional)
         self.soft_min = self.PULSE_MIN
         self.soft_max = self.PULSE_MAX
-        self.turnOnTorque()
+        # self.turnOnTorque()
 
     # ---------- torque ----------
     def turnOnTorque(self):
