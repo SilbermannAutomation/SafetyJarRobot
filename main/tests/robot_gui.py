@@ -43,9 +43,9 @@ class RobotGUI(tk.Tk):
             radio = tk.Radiobutton(self, variable=self.selected_axis, value=i)
             radio.grid(row=i, column=2, padx=5)
 
-        tk.Button(self, text="START", width=10, command=self.start_selected_axis).grid(row=len(AXIS_LABELS), column=0, pady=20)
-        tk.Button(self, image=self.up_img, command=lambda: self.start_jog(self.selected_axis.get(), 1)).grid(row=len(AXIS_LABELS), column=1)
-        tk.Button(self, image=self.down_img, command=lambda: self.start_jog(self.selected_axis.get(), -1)).grid(row=len(AXIS_LABELS), column=2)
+        tk.Button(self, text="START", width=10, command=self.start_selected_axis).grid(row=len(AXIS_LABELS), column=3, pady=20)
+        tk.Button(self, image=self.up_img, command=lambda: self.start_jog(self.selected_axis.get(), 1)).grid(row=len(AXIS_LABELS), column=4)
+        tk.Button(self, image=self.down_img, command=lambda: self.start_jog(self.selected_axis.get(), -1)).grid(row=len(AXIS_LABELS), column=5)
 
     def validate_input(self, value_if_allowed):
         if value_if_allowed == "":
