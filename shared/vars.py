@@ -6,8 +6,7 @@ class Vars:
         ax2=45,
         ax3=90,
         ax4=90,
-        ax5=0,
-        grip_open=True
+        ax5=0
     )
     
     POS_1_1_down = RobotPosition( #first line, first place, on the object, open gripper
@@ -15,8 +14,7 @@ class Vars:
         ax2=25,
         ax3=60,
         ax4=90,
-        ax5=0,
-        grip_open=True
+        ax5=0
     )
     
     POS_1_1_catch = RobotPosition(#first line, first place, above the object, closed gripper
@@ -24,6 +22,5 @@ class Vars:
         ax2=25,
         ax3=60,
         ax4=90,
-        ax5=0,
-        grip_open=False
+        ax5=0
     )
