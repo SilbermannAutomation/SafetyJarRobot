@@ -21,6 +21,8 @@ class RobotGUI(tk.Tk):
         self.geometry("800x400")
         self.option_add("*Font", DEFAULT_FONT)
 
+        self.bind("<F1>", lambda event: self.initialize_axes())
+
         self.controller = RobotController()
         self.spinboxes = []
         self.selected_axis = tk.IntVar(value=0)
@@ -101,3 +103,5 @@ class RobotGUI(tk.Tk):
 if __name__ == "__main__":
     app = RobotGUI()
     app.mainloop()
+
+    
