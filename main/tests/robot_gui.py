@@ -67,6 +67,8 @@ class RobotGUI(tk.Tk):
     def stop_jog(self):
         self.jogging = False
 
+    def validate_input(self, value):
+        return value.isdigit() and 0 <= int(value) <= 1000
 
 if __name__ == "__main__":
     app = RobotGUI()
