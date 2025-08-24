@@ -29,9 +29,9 @@ if __name__ == "__main__":
     }
 
 
-    MANAGER.synchronized_move_pulses(target_positions, hold=True)
+    MANAGER.synchronized_move_pulses(target_positions, velocity=350, hold=True)
     time.sleep(2)
-    MANAGER.synchronized_move_pulses(base_positions, hold=True)
+    MANAGER.synchronized_move_pulses(base_positions, velocity=350, hold=True)
 
 
     # for servo in SERVOS:

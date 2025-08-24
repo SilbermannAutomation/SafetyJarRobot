@@ -26,7 +26,7 @@ class MotorManager:
     def all_names(self):
         return list(self.motors.keys())
 
-    def synchronized_move_pulses(self, target_pulses_dict: dict, hold=True):
+    def synchronized_move_pulses(self, target_pulses_dict: dict, velocity=300, hold=True):
         """
         Move all specified motors to their target pulse positions (0–1000),
         synchronizing so that all arrive at the same time.
@@ -50,7 +50,9 @@ class MotorManager:
                 current = target
 
             distance = abs(target - current)
-            default_velocity = 200  # 1000 pulses / 240 deg/s
+            if (velocity is None) or (velocity <= 0):
+                velocity = 300  # default if invalid
+            default_velocity = velocity
             duration = distance / default_velocity if distance > 0 else motor.MIN_DURATION_S
             duration = Util._clamp(duration, motor.MIN_DURATION_S, motor.MAX_DURATION_S)
 
