@@ -34,9 +34,11 @@ class RobotGUI(tk.Tk):
         for i, label in enumerate(AXIS_LABELS):    
             tk.Label(self, text=f"{i+1}. {label}", anchor="w").grid(row=i, column=0, padx=10, pady=5, sticky="w")
 
-            sb = tk.Spinbox(self, from_=0, to=1000, width=5, validate="key", validatecommand=vcmd)
+            sb = tk.Spinbox(self, from_=0, to=1000, width=5)
+            sb.insert(0, "500")
             sb.grid(row=i, column=1, padx=5)
             self.spinboxes.append(sb)
+
 
             radio = tk.Radiobutton(self, variable=self.selected_axis, value=i)
             radio.grid(row=i, column=2, padx=5)
