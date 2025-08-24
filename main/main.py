@@ -6,9 +6,13 @@ if __name__ == "__main__":
     SERVOS = [Motor(sid, device="/dev/serial0", baud=1_000_000, name=f"motor{sid}", range_deg=240.0) for sid in MOTOR_IDS]
 
     for i in SERVOS:
-        i.turn_on_torque()
+        i.turn_off_torque()
         print(f"Motor ID {i.id} named '{i.name}' status: {i.readStatus()}")
         print(f"  Position: {i.readPosition(units='deg')} deg")
+
+    while True:
+        for i in SERVOS:
+            print("Position:", i.readPosition(units='pulses'), "pulses", f"(Motor ID {i.id})")
 
     # Simple demo: set up one motor and try a few moves.
     # Adjust SERVO_ID below.

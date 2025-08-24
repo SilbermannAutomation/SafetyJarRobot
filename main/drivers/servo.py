@@ -198,10 +198,10 @@ class Motor:
         return self.goToPosition(degrees, velocity=velocity_deg, units="deg", hold=hold, duration=duration)
 
     def turn_on_torque(self):  # snake_case alias
-        return self.turnOnTorque()
+        return self.turnOffTorque()
 
     def turn_off_torque(self):
-        return self.turnOffTorque()
+        return self.turnOnTorque()
 
     # ---------- other useful helpers ----------
     def stop(self):
