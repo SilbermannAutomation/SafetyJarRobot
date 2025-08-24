@@ -15,31 +15,6 @@ app = Flask(
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True  # handy during development
 
-def run_job(values):
-    print(f"[RUN] Received values: {values}")
-    time.sleep(2)
-    print("[RUN] Job completed")
-
-@app.route("/", methods=["GET"])
-def index():
-    defaults = [50]*6
-    return render_template("index.html", defaults=defaults)
-
-@app.route("/run", methods=["POST"])
-def run():
-    vals = [request.form.get(f"p{i}", type=float) for i in range(1, 7)]
-    if any(v is None for v in vals):
-        return {"status": "error", "message": "Missing parameters"}, 400
-    threading.Thread(target=run_job, args=(vals,), daemon=True).start()
-    return {"status": "ok", "values": vals}
-
-if __name__ == "__main__":
-    use_https = os.getenv("USE_HTTPS", "0") == "1"
-    host = "0.0.0.0"
-    if use_https:
-        app.run(host=host, port=5001, ssl_context=("cert.pem", "key.pem"))
-    else:
-        app.run(host=host, port=5000)
 manager = MotorManager("controller/servo_map.json")
 
 def run_job(values):
@@ -63,31 +38,21 @@ def run_job(values):
 
 @app.route("/", methods=["GET"])
 def index():
-    # Default values (0-1000) for six servos
-    defaults = [500, 500, 500, 500, 500, 500]
+    defaults = [50]*6
     return render_template("index.html", defaults=defaults)
 
 @app.route("/run", methods=["POST"])
 def run():
-    # Collect values p1..p6 from the POST body
-    vals = []
-    for i in range(1, 7):
-        v = request.form.get(f"p{i}", type=float)
-        if v is None:
-            return jsonify({"status": "error", "message": f"Missing p{i}"}), 400
-        vals.append(v)
-
-    # Start background task
-    t = threading.Thread(target=run_job, args=(vals,), daemon=True)
-    t.start()
-
-    return jsonify({"status": "ok", "values": vals})
+    vals = [request.form.get(f"p{i}", type=float) for i in range(1, 7)]
+    if any(v is None for v in vals):
+        return {"status": "error", "message": "Missing parameters"}, 400
+    threading.Thread(target=run_job, args=(vals,), daemon=True).start()
+    return {"status": "ok", "values": vals}
 
 if __name__ == "__main__":
     use_https = os.getenv("USE_HTTPS", "0") == "1"
     host = "0.0.0.0"
     if use_https:
-        # Place cert.pem and key.pem in the project directory for HTTPS
         app.run(host=host, port=5001, ssl_context=("cert.pem", "key.pem"))
     else:
         app.run(host=host, port=5000)
