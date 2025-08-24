@@ -1,6 +1,6 @@
 from drivers.servo import Motor
 import time
-from main.drivers.motor_manager import MotorManager
+from drivers.motor_manager import MotorManager
 
 # ----------- Example usage -----------
 if __name__ == "__main__":
