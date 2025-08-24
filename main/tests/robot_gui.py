@@ -78,11 +78,11 @@ class RobotGUI(tk.Tk):
             self.controller.move_axis(axis, pulse)
         except Exception as e:
             print(f"Jogging error: {e}")
-        self.after(200, lambda: self._jog(axis, delta))
+            self.after(200, lambda: self._jog(axis, delta))
 
     def stop_jog(self):
         self.jogging = False
 
-        if __name__ == "__main__":
-            app = RobotGUI()
-            app.mainloop()
+if __name__=="__main__":
+    app = RobotGUI()
+    app.mainloop()
