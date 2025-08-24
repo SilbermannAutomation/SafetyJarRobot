@@ -36,10 +36,10 @@ class RobotGUI(tk.Tk):
             start_button = tk.Button(self, text="START", width=8, command=lambda a=i: self.start_axis(a))
             start_button.grid(row=i, column=2, padx=5)
 
-            down_button = tk.Button(self, image=self.down_image, command=lambda a=i: self.start_jog(a, -1))
+            down_button = tk.Button(self, image=self.down_img, command=lambda a=i: self.start_jog(a, -1))
             down_button.grid(row=i, column=3, padx=2)
 
-            up_button = tk.Button(self, image=self.up_image, command=lambda a=i: self.start_jog(a, 1))
+            up_button = tk.Button(self, image=self.up_img, command=lambda a=i: self.start_jog(a, 1))
             up_button.grid(row=i, column=4, padx=2)
 
 
