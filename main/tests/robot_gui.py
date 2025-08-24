@@ -80,6 +80,7 @@ class RobotGUI(tk.Tk):
 
 
     def start_jog(self, axis, delta):
+        delta *= 10;
         if self.jogging:
             return
         self.jogging = True
