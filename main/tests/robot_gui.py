@@ -34,6 +34,7 @@ class RobotGUI(tk.Tk):
 
         self.up_img = ImageTk.PhotoImage(Image.open("assets/up.png").resize((40, 40)))
         self.down_img = ImageTk.PhotoImage(Image.open("assets/down.png").resize((40, 40)))
+        self.zero_img = ImageTk.PhotoImage(Image.open("assets/zero.png").resize((40, 40)))
 
         vcmd = (self.register(self.validate_input), "%P")
 
@@ -53,7 +54,7 @@ class RobotGUI(tk.Tk):
         tk.Button(self, text="START", width=10, command=self.start_selected_axis).grid(row=3, column=3, pady=20)
         tk.Button(self, image=self.up_img, command=lambda: self.start_jog(self.selected_axis.get(), 1)).grid(row=3, column=4)
         tk.Button(self, image=self.down_img, command=lambda: self.start_jog(self.selected_axis.get(), -1)).grid(row=3, column=5)
-        tk.Button(self, text="INITIALIZE", width=10, command=self.initialize_all_axes).grid(
+        tk.Button(self, image=self.zero_img, command=self.initialize_all_axes).grid(
                     row=0, column=3, pady=10)
 
 
