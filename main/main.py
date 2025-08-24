@@ -18,8 +18,20 @@ if __name__ == "__main__":
         "gripper": 500
     }
 
+    # Move all servos to specific pulses, synchronized
+    base_positions = {
+        "base_yaw": 500,
+        "shoulder": 500,
+        "elbow": 500,
+        "wrist_pitch": 500,
+        "wrist_roll": 500,
+        "gripper": 500
+    }
+
 
     MANAGER.synchronized_move_pulses(target_positions, hold=True)
+    time.sleep(2)
+    MANAGER.synchronized_move_pulses(base_positions, hold=True)
 
 
     # for servo in SERVOS:

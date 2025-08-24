@@ -50,7 +50,7 @@ class MotorManager:
                 current = target
 
             distance = abs(target - current)
-            default_velocity = 4.17  # 1000 pulses / 240 deg/s
+            default_velocity = 200  # 1000 pulses / 240 deg/s
             duration = distance / default_velocity if distance > 0 else motor.MIN_DURATION_S
             duration = Util._clamp(duration, motor.MIN_DURATION_S, motor.MAX_DURATION_S)
 
