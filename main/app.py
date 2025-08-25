@@ -56,7 +56,7 @@ def job_with_torque(values, torque_settings):
         }
         manager.synchronized_move_pulses(target_positions, velocity=350, hold=True)
         manager.set_torque(torque_map)
-        # manager.print_all_positions()
+        manager.print_all_positions()
 
 @app.route("/", methods=["GET"])
 def index():
