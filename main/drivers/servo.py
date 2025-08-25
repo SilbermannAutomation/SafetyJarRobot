@@ -37,8 +37,8 @@ class Motor:
       readStatus() -> dict (vin_mV, temp_C, torque_on)
     """
 
-    PULSE_MIN = 0
-    PULSE_MAX = 1000
+    PULSE_MIN = -100
+    PULSE_MAX = 1100
     MIN_DURATION_S = 0.15
     MAX_DURATION_S = 60.0
     SAFE_DEFAULT_DUR = 2.0
@@ -49,18 +49,20 @@ class Motor:
         device: str = "/dev/serial0",
         baud: int = 1_000_000,
         name: Optional[str] = None,
-        range_deg: float = 240.0,
+        software_min: int = PULSE_MIN,
+        software_max: int = PULSE_MAX,
         read_timeout: float = 0.8,
     ):
         self.id = int(servo_id)
         self.name = name or f"servo_{self.id}"
-        self.range_deg = float(range_deg)
+        self.soft_min = software_min
+        self.soft_max = software_max
         self.read_timeout = float(read_timeout)
         self.board = _BoardSingleton.get(device=device, baud=baud, timeout=5)
 
         # soft software clamps (optional)
-        self.soft_min = self.PULSE_MIN
-        self.soft_max = self.PULSE_MAX
+        # self.soft_min = self.PULSE_MIN
+        # self.soft_max = self.PULSE_MAX
         # self.turnOnTorque()
 
     # ---------- torque ----------

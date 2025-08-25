@@ -1,8 +1,32 @@
 {
-    "gripper" : 1,
-    "wrist_roll" : 2,
-    "wrist_pitch" : 3,
-    "elbow" : 4,
-    "shoulder" : 5,
-    "base_yaw" : 6
+    "gripper": {
+        "id": 1,
+        "min_position": 150,
+        "max_position": 693
+    },
+    "wrist_roll": {
+        "id": 2,
+        "min_position": 18,
+        "max_position": 984
+    },
+    "wrist_pitch": {
+        "id": 3,
+        "min_position": 36,
+        "max_position": 980
+    },
+    "elbow": {
+        "id": 4,
+        "min_position": -45,
+        "max_position": 1065
+    },
+    "shoulder": {
+        "id": 5,
+        "min_position": 140,
+        "max_position": 879
+    },
+    "base_yaw": {
+        "id": 6,
+        "min_position": -153,
+        "max_position": 1160
+    }
 }

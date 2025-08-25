@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 @dataclass
 class RobotPosition:
-    ax1: int
-    ax2: int
-    ax3: int
-    ax4: int
-    ax5: int
+    wrist_roll: int
+    wrist_pitch: int
+    elbow: int
+    shoulder: int
+    base_yaw: int

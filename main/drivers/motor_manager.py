@@ -17,8 +17,15 @@ class MotorManager:
         with open(json_path, 'r') as f:
             servo_map = json.load(f)
 
-        for name, servo_id in servo_map.items():
-            self.motors[name] = Motor(servo_id, name=name)
+        for name, config in servo_map.items():
+            if not isinstance(config, dict) or 'id' not in config:
+                raise ValueError(f"Invalid configuration for motor '{name}' in servo map")
+
+            servo_id = config['id']
+            soft_min = config.get('min_position', 0)  # Default to 0 if not specified
+            soft_max = config.get('max_position', 1000)  # Default to 1000 if not specified
+
+            self.motors[name] = Motor(servo_id, name=name, soft_min=soft_min, soft_max=soft_max)
 
     def get_motor(self, name) -> Motor:
         return self.motors.get(name)
