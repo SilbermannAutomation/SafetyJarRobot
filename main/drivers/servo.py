@@ -171,6 +171,7 @@ class Motor:
         # Read current pulses (for duration computation)
         curr = self.readPosition(units="pulses")
         if curr is None:
+            print("[Motor] Warning: readPosition() failed; using default duration")
             duration = self.SAFE_DEFAULT_DUR
             curr = target_pulses  # so dist=0; will rely on duration/default
 
