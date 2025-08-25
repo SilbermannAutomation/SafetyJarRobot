@@ -4,8 +4,7 @@ from drivers.motor_manager import MotorManager
 
 # ----------- Example usage -----------
 if __name__ == "__main__":
-    MOTOR_IDS = [1, 2, 3, 4, 5, 6]
-    SERVOS = [Motor(sid, device="/dev/serial0", baud=1_000_000, name=f"motor{sid}", range_deg=240.0) for sid in MOTOR_IDS]
+    
     MANAGER = MotorManager("controller/servo_map.json")
 
     # Move all servos to specific pulses, synchronized
