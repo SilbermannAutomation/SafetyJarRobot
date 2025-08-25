@@ -3,6 +3,10 @@ import time
 from drivers.motor_manager import MotorManager
 from models.robot_position import RobotPosition
 from shared.vars import Vars
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 MANAGER = MotorManager("controller/servo_map.json")
 
