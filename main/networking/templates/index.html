@@ -25,7 +25,7 @@
       <div class="row-label">{{ defaults[i-1][0] }}</div>
       <input type="range" min="0" max="1000" step="1" id="s{{ i }}" value="{{ defaults[i-1][1] }}">
       <input type="number" min="0" max="1000" step="1" id="n{{ i }}" value="{{ defaults[i-1][1] }}">
-      <input type="checkbox" id="t{{ i }}" value="{{ defaults[i-1][2] }}" style="grid-column: span 3; justify-self: start;">
+      <input type="checkbox" id="t{{ i }}" style="grid-column: span 3; justify-self: start;" {% if defaults[i-1][2] %}checked{% endif %}>
     {% endfor %}
   </form>
 
