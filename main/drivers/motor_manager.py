@@ -4,6 +4,7 @@ import time
 from drivers.servo import Motor
 from utils.util import Util  # for clamping
 from controller.control_board_singleton import _BoardSingleton
+from models.robot_position import RobotPosition
 
 class MotorManager:
     def __init__(self, json_path='servo_map.json'):
@@ -59,7 +60,7 @@ class MotorManager:
             except Exception as e:
                 print(f"[MotorManager] Failed to set torque for motor '{name}': {e}")
 
-    def synchronized_move_pulses(self, target_pulses_dict: dict, velocity=300, hold=True):
+    def synchronized_move_pulses(self, target_pulses_dict: RobotPosition, velocity=300, hold=True):
         """
         Move all specified motors to their target pulse positions (0-1000),
         synchronizing so that all arrive at the same time.
@@ -71,9 +72,9 @@ class MotorManager:
         durations = []
         pulse_targets = []
 
-        print(f"[MotorManager] Preparing synchronized move for {len(target_pulses_dict)} motors")
+        print(f"[MotorManager] Preparing synchronized move for {len(target_pulses_dict.positions)} motors")
         # Step 1: compute durations and clamp target pulses
-        for name, target in target_pulses_dict.items():
+        for name, target in target_pulses_dict.positions.items():
             motor = self.get_motor(name)
             if motor is None:
                 raise ValueError(f"Motor '{name}' not found")
@@ -112,7 +113,7 @@ class MotorManager:
 
         # Step 3: release torque if hold is False
         if not hold:
-            for name in target_pulses_dict:
+            for name in target_pulses_dict.positions.keys():
                 motor = self.get_motor(name)
                 if motor:
                     try:

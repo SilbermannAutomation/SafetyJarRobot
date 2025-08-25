@@ -3,6 +3,7 @@ import os, threading, time
 from drivers.motor_manager import MotorManager
 # app.py
 from pathlib import Path
+from models.robot_position import RobotPosition
 
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATE_DIR = BASE_DIR / "networking/templates"  # change to where your index.html lives
@@ -17,35 +18,9 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True  # handy during development
 
 manager = MotorManager("controller/servo_map.json")
 
-def run_job(values):
-    """
-    TODO: Replace this with your actual logic.
-    This runs in a background thread so the UI stays responsive.
-    """
-    print(f"[RUN] Received values: {values}")
-    # Simulate some work
-    # Move all servos to specific pulses, synchronized
-    target_positions = {
-        "base_yaw": values[0],
-        "shoulder": values[1],
-        "elbow": values[2],
-        "wrist_pitch": values[3],
-        "wrist_roll": values[4],
-        "gripper": values[5]
-    }
-    manager.synchronized_move_pulses(target_positions, velocity=350, hold=True)
-    manager.print_all_positions()
-    print("[RUN] Job completed")
-
 def job_with_torque(values, torque_settings):
-        target_positions = {
-            "base_yaw": values[0],
-            "shoulder": values[1],
-            "elbow": values[2],
-            "wrist_pitch": values[3],
-            "wrist_roll": values[4],
-            "gripper": values[5]
-        }
+        target_positions = RobotPosition(values)
+
         torque_map = {
             "base_yaw": torque_settings[0],
             "shoulder": torque_settings[1],
@@ -54,7 +29,7 @@ def job_with_torque(values, torque_settings):
             "wrist_roll": torque_settings[4],
             "gripper": torque_settings[5]
         }
-        manager.synchronized_move_pulses(target_positions, velocity=350, hold=True)
+        manager.synchronized_move_pulses(target_positions, velocity=400, hold=True)
         manager.set_torque(torque_map)
         manager.print_all_positions()
 
