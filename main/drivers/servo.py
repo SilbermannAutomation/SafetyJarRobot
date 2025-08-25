@@ -49,14 +49,14 @@ class Motor:
         device: str = "/dev/serial0",
         baud: int = 1_000_000,
         name: Optional[str] = None,
-        software_min: int = PULSE_MIN,
-        software_max: int = PULSE_MAX,
+        soft_min: int = PULSE_MIN,
+        soft_max: int = PULSE_MAX,
         read_timeout: float = 0.8,
     ):
         self.id = int(servo_id)
         self.name = name or f"servo_{self.id}"
-        self.soft_min = software_min
-        self.soft_max = software_max
+        self.soft_min = soft_min
+        self.soft_max = soft_max
         self.read_timeout = float(read_timeout)
         self.board = _BoardSingleton.get(device=device, baud=baud, timeout=5)
 
