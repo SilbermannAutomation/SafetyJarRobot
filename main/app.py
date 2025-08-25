@@ -66,7 +66,7 @@ def index():
 @app.route("/run", methods=["POST"])
 def run():
     vals = [request.form.get(f"p{i}", type=float) for i in range(1, 7)]
-    torques = [request.form.get(f"t{i}", type=bool) for i in range(1, 7)]
+    torques = [request.form.get(f"t{i}", "false").lower() == "true" for i in range(1, 7)]
     for i in range(1, 7):
         print(f"Value {i}: {vals[i-1]}, Torque: {torques[i-1]}")
     
