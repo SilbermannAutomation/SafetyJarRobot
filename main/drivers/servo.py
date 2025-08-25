@@ -41,7 +41,7 @@ class Motor:
     PULSE_MAX = 1100
     MIN_DURATION_S = 0.15
     MAX_DURATION_S = 60.0
-    SAFE_DEFAULT_DUR = 2.0
+    SAFE_DEFAULT_DUR = 1.0  # if we can't compute duration, use this
 
     def __init__(
         self,
@@ -171,6 +171,7 @@ class Motor:
         # Read current pulses (for duration computation)
         curr = self.readPosition(units="pulses")
         if curr is None:
+            duration = self.SAFE_DEFAULT_DUR
             curr = target_pulses  # so dist=0; will rely on duration/default
 
         # Determine duration

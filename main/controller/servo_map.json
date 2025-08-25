@@ -2,7 +2,7 @@
     "gripper": {
         "id": 1,
         "min_position": 150,
-        "max_position": 693
+        "max_position": 720
     },
     "wrist_roll": {
         "id": 2,
