@@ -18,3 +18,6 @@ if __name__ == "__main__":
     MANAGER.synchronized_move_pulses(Vars.POS_1_1_DOWN, velocity=250, hold=True)
     MANAGER.synchronized_move_pulses(Vars.POS_1_1_CATCH, velocity=350, hold=True)
     MANAGER.synchronized_move_pulses(Vars.POS_1_1_CATCH_UP, velocity=250, hold=True)
+
+    MANAGER.synchronized_move_pulses(base_positions, velocity=400, hold=True)
+    print("Done")
