@@ -12,7 +12,7 @@ from shared.vars import Vars
 MANAGER = MotorManager("controller/servo_map.json")
 
 if __name__ == "__main__":
-    base_positions = RobotPosition(base_yaw=500, shoulder=500, elbow=500, wrist_pitch=500, wrist_roll=500, gripper=500)
+    base_positions = RobotPosition(base_yaw=500, shoulder=500, elbow=500, wrist_pitch=500, wrist_roll=500, gripper=540)
 
     MANAGER.synchronized_move_pulses(Vars.POS_1_1_UP, velocity=400, hold=True)
     MANAGER.synchronized_move_pulses(Vars.POS_1_1_DOWN, velocity=250, hold=True)
