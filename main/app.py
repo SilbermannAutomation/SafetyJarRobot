@@ -61,7 +61,7 @@ def job_with_torque(values, torque_settings):
 
 @app.route("/", methods=["GET"])
 def index():
-    defaults = [("Base Yaw", 500), ("Shoulder", 500), ("Elbow", 500), ("Wrist Pitch", 500), ("Wrist Roll", 500), ("Gripper", 500)]
+    defaults = [("Base Yaw", 500, False), ("Shoulder", 500, True), ("Elbow", 500, True), ("Wrist Pitch", 500, True), ("Wrist Roll", 500, True), ("Gripper", 500, True)]
     return render_template("index.html", defaults=defaults)
 
 @app.route("/run", methods=["POST"])
