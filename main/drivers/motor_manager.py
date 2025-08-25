@@ -81,7 +81,12 @@ class MotorManager:
             target = Util._clamp(int(target), motor.soft_min, motor.soft_max)
             current = motor.readPosition(units="pulses")
             if current is None:
-                current = target
+                duration = motor.SAFE_DEFAULT_DUR
+                durations.append(duration)
+                pulse_targets.append((motor.id, target))
+                print(f"[MotorManager] Warning: could not read position of motor '{name}'; using default duration {duration}s")
+                continue
+                #current = target
 
             distance = abs(target - current)
             if (velocity is None) or (velocity <= 0):
