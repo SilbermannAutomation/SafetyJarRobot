@@ -38,6 +38,27 @@ class MotorManager:
             pos = motor.readPosition(units=units)
             print(f"  {name} (ID {motor.id}): {pos} {units}")
 
+    def set_torque(self, torque_dict: dict):
+        """
+        Enable or disable torque for specified motors.
+
+        Args:
+            torque_dict: dict {motor_name: bool (True to enable, False to disable)}
+        """
+        for name, enabled in torque_dict.items():
+            motor = self.get_motor(name)
+            if motor is None:
+                print(f"[MotorManager] Motor '{name}' not found")
+                continue
+
+            try:
+                if enabled:
+                    motor.turn_on_torque()
+                else:
+                    motor.turn_off_torque()
+            except Exception as e:
+                print(f"[MotorManager] Failed to set torque for motor '{name}': {e}")
+
     def synchronized_move_pulses(self, target_pulses_dict: dict, velocity=300, hold=True):
         """
         Move all specified motors to their target pulse positions (0-1000),

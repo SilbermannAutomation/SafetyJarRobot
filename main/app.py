@@ -37,6 +37,28 @@ def run_job(values):
     manager.print_all_positions()
     print("[RUN] Job completed")
 
+def job_with_torque(values, torque_settings):
+        target_positions = {
+            "base_yaw": values[0],
+            "shoulder": values[1],
+            "elbow": values[2],
+            "wrist_pitch": values[3],
+            "wrist_roll": values[4],
+            "gripper": values[5]
+        }
+        torque_map = {
+            "base_yaw": torque_settings[0],
+            "shoulder": torque_settings[1],
+            "elbow": torque_settings[2],
+            "wrist_pitch": torque_settings[3],
+            "wrist_roll": torque_settings[4],
+            "gripper": torque_settings[5]
+        }
+        for motor, torque in torque_map.items():
+            manager.set_torque(motor, torque)
+        manager.synchronized_move_pulses(target_positions, velocity=350, hold=True)
+        manager.print_all_positions()
+
 @app.route("/", methods=["GET"])
 def index():
     defaults = [("Base Yaw", 500), ("Shoulder", 500), ("Elbow", 500), ("Wrist Pitch", 500), ("Wrist Roll", 500), ("Gripper", 500)]
@@ -45,10 +67,13 @@ def index():
 @app.route("/run", methods=["POST"])
 def run():
     vals = [request.form.get(f"p{i}", type=float) for i in range(1, 7)]
-    if any(v is None for v in vals):
+    torques = [request.form.get(f"t{i}", type=bool) for i in range(1, 7)]
+    
+    if any(v is None for v in vals) or any(t is None for t in torques):
         return {"status": "error", "message": "Missing parameters"}, 400
-    threading.Thread(target=run_job, args=(vals,), daemon=True).start()
-    return {"status": "ok", "values": vals}
+
+    threading.Thread(target=job_with_torque, args=(vals, torques), daemon=True).start()
+    return {"status": "ok", "values": vals, "torques": torques}
 
 if __name__ == "__main__":
     use_https = os.getenv("USE_HTTPS", "0") == "1"
