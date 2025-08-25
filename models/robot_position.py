@@ -14,12 +14,12 @@ class RobotPosition:
             "gripper": gripper
         }
 
-    def __init__(self, values: list):
-        self.positions = {
-            "base_yaw": values[0],
-            "shoulder": values[1],
-            "elbow": values[2],
-            "wrist_pitch": values[3],
-            "wrist_roll": values[4],
-            "gripper": values[5]
-        }
+    # def __init__(self, values: list):
+    #     self.positions = {
+    #         "base_yaw": values[0],
+    #         "shoulder": values[1],
+    #         "elbow": values[2],
+    #         "wrist_pitch": values[3],
+    #         "wrist_roll": values[4],
+    #         "gripper": values[5]
+    #     }

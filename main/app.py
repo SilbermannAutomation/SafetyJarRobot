@@ -19,7 +19,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True  # handy during development
 manager = MotorManager("controller/servo_map.json")
 
 def job_with_torque(values, torque_settings):
-        target_positions = RobotPosition(values)
+        target_positions = RobotPosition(values[0], values[1], values[2], values[3], values[4], values[5])
 
         torque_map = {
             "base_yaw": torque_settings[0],
