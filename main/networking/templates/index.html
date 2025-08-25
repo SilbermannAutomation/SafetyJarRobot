@@ -52,6 +52,7 @@
     const form = new FormData();
     for (let i = 1; i <= 6; i++) {
       form.append('p' + i, document.getElementById('n' + i).value);
+      form.append('t' + i, document.getElementById('t' + i).checked);
     }
 
     status.textContent = 'Starting…';
